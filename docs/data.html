@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>YOUR PROJECT TITLE - 2&nbsp; Data</title>
+<title>Exploring the Pulse of the City: Insights from MTA Turnstile Data - 2&nbsp; Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,8 +57,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-submit-button-title": "Submit"
   }
 }</script>
 
@@ -77,7 +76,7 @@ ul.task-list li input[type="checkbox"] {
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -89,9 +88,9 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">YOUR PROJECT TITLE</a> 
+      <a href="./">Exploring the Pulse of the City: Insights from MTA Turnstile Data</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://prajnag.github.io/MTA-turnstile-data/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-git"></i></a>
 </div>
     </div>
       </div>
@@ -145,7 +144,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a></li>
   <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://prajnag.github.io/MTA-turnstile-data/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://prajnag.github.io/MTA-turnstile-data/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -167,6 +166,16 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p>The dataset in question is collected and maintained by the Metropolitan Transportation Authority (MTA) of New York. It comprises hourly records of ridership data from various turnstiles throughout the subway system, providing an intricate picture of subway usage patterns over time. The data is structured in a tabular format, with updates made available to the public on a weekly basis. The dimensions of the dataset include timestamps, station information, types of payment methods used, and ridership counts, among others.</p>
+<p>In terms of technicalities, the data is collected through electronic turnstiles that register each entry and exit, timestamped to the nearest hour. The MTA uses this information for operational purposes and releases it for public use under the state’s open data initiative.</p>
+<p>The format of the data is suitable for analysis in R. Issues that one might encounter with this data include discrepancies due to maintenance or operational shutdowns, which could lead to unrecorded entries or exits. There may also be anomalies during holiday periods or special events, which could affect regular traffic patterns.</p>
+<p>Careful documentation of the data source is essential for reproducibility and verification of the research. The specific dataset can be accessed through the provided link: MTA Subway Hourly Ridership Data (https://data.ny.gov/Transportation/MTA-Subway-Hourly-Ridership-Beginning-February-202/wujg-7c2s). This link leads directly to the New York State open data portal where the dataset is hosted, allowing for direct download and inspection of the data.</p>
+<p>The applied filters serve to narrow down the dataset to a manageable and relevant subset for analysis.</p>
+<ol type="1">
+<li><p>Time Filter: We filtered the data to include only the entries between July 1, 2022, and December 31, 2022. This time range focuses the analysis on the second half of the year, which may help in observing trends related to seasonal ridership changes or responses to specific events within that timeframe.</p></li>
+<li><p>Transfer Filter: We include any records where the number of transfers is zero. We are focusing on entries where riders did not switch from one subway line to another during their trip. This is useful for analyzing direct trips and could indicate stations with a high number of origin or destination traffic without intermediate transfers.</p></li>
+<li><p>Ridership Filter: We have included only those records where the ridership is greater than 20. This filter serves to remove outliers where stations have extremely low traffic, which might not be significant for broad pattern analysis. It ensures that the data reflects stations and times with a minimal level of activity, thereby focusing on periods and places of substantive use.</p></li>
+</ol>
 <section id="description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
 </section>

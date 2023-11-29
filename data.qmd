@@ -1,5 +1,49 @@
 # Data
+The dataset in question is collected and maintained by the Metropolitan Transportation Authority (MTA) of New York. It comprises hourly records of ridership data from various turnstiles throughout the subway system, providing an intricate picture of subway usage patterns over time. The data is structured in a tabular format, with updates made available to the public on a weekly basis. The dimensions of the dataset include timestamps, station information, types of payment methods used, and ridership counts, among others.
+
+In terms of technicalities, the data is collected through electronic turnstiles that register each entry and exit, timestamped to the nearest hour. The MTA uses this information for operational purposes and releases it for public use under the state's open data initiative.
+
+The format of the data is suitable for analysis in R. Issues that one might encounter with this data include discrepancies due to maintenance or operational shutdowns, which could lead to unrecorded entries or exits. There may also be anomalies during holiday periods or special events, which could affect regular traffic patterns.
+
+Careful documentation of the data source is essential for reproducibility and verification of the research. The specific dataset can be accessed through the provided link: MTA Subway Hourly Ridership Data (https://data.ny.gov/Transportation/MTA-Subway-Hourly-Ridership-Beginning-February-202/wujg-7c2s). This link leads directly to the New York State open data portal where the dataset is hosted, allowing for direct download and inspection of the data.
+
+The applied filters serve to narrow down the dataset to a manageable and relevant subset for analysis.
+
+1. Time Filter: We filtered the data to include only the entries between July 1, 2022, and December 31, 2022. This time range focuses the analysis on the second half of the year, which may help in observing trends related to seasonal ridership changes or responses to specific events within that timeframe.
+
+2. Transfer Filter: We include any records where the number of transfers is zero. We are focusing on entries where riders did not switch from one subway line to another during their trip. This is useful for analyzing direct trips and could indicate stations with a high number of origin or destination traffic without intermediate transfers.
+
+3. Ridership Filter: We have included only those records where the ridership is greater than 20. This filter serves to remove outliers where stations have extremely low traffic, which might not be significant for broad pattern analysis. It ensures that the data reflects stations and times with a minimal level of activity, thereby focusing on periods and places of substantive use.
 
 ## Description
+### Research Plan
+**1. Data Import and Cleaning:**
+- We will import the MTA Turnstile dataset into R utilizing the `readr` package for seamless data reading.
+- Our team will carry out preliminary cleaning to maintain data quality. This includes addressing missing values, verifying and correcting data types, and resolving any anomalies resulting from maintenance or special events.
+- We will also validate the integrity of the pre-applied filters to ensure the dataset's relevance to our analysis.
+
+**2. Exploratory Data Analysis (EDA):**
+- Utilizing `dplyr` for data wrangling and `ggplot2` for visualization, we will conduct an initial exploration to grasp the dataset's structure and content.
+- We will generate summary statistics that will aid in understanding the distribution of ridership and spotlighting any immediate patterns or outliers within the data.
+
+**3. Traffic Analysis by Stations and Boroughs:**
+- Data will be summarized by stations using R's aggregation functions to pinpoint those with the most significant foot traffic.
+- A borough-level analysis will be performed to identify which parts of the city show higher activity levels.
+- Findings will be visualized using bar charts and maps to provide clear and engaging representations of our data.
+
+**4. Time Series Analysis:**
+- We will create time series plots, enabling us to examine the variations in subway traffic patterns across different days and times.
+
+**5. Peak Period Identification:**
+- By aggregating ridership data, we aim to identify peak travel times accurately.
+- Clustering techniques, such as k-means clustering, will be employed to categorize time periods into high, medium, and low ridership clusters.
+
+**6. Statistical Testing:**
+- We will apply chi-squared tests and other relevant statistical tests to investigate the relationships between categorical variables such as payment method and ridership, allowing us to draw meaningful inferences from the data.
+
+**7. Results Interpretation and Conclusion:**
+- The results will be interpreted in light of the original research questions posed.
+- A detailed discussion of our findings will be provided, considering the implications for urban planning and policy-making.
+- Our conclusion will summarize the study's outcomes and propose recommendations for further research or potential applications of our findings in real-world scenarios.
 
 ## Missing value analysis

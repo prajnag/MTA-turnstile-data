@@ -6,11 +6,11 @@ execute:
   echo: true
 
 book:
-  title: "YOUR PROJECT TITLE"
+  title: "Exploring the Pulse of the City: Insights from MTA Turnstile Data"
   author:
-    - AUTHOR1 (UNI1)
-    - AUTHOR2 (UNI2)
-  repo-url: https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME
+    - Rithika Lakshmi Shankar (rls2250)
+    - Prajna Girish (pg2785)
+  repo-url: https://prajnag.github.io/MTA-turnstile-data/
   date: today
   page-footer:
     right: |
