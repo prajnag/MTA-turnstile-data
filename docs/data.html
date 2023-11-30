@@ -141,7 +141,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a>
+  <ul class="collapse">
+  <li><a href="#research-plan" id="toc-research-plan" class="nav-link" data-scroll-target="#research-plan"><span class="header-section-number">2.1.1</span> Research Plan</a></li>
+  </ul></li>
   <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://prajnag.github.io/MTA-turnstile-data/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://prajnag.github.io/MTA-turnstile-data/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -178,9 +181,23 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 <section id="description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
+<section id="research-plan" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="research-plan"><span class="header-section-number">2.1.1</span> Research Plan</h3>
+<p><strong>1. Data Import and Cleaning:</strong> - We will import the MTA Turnstile dataset into R utilizing the <code>readr</code> package for seamless data reading. - Our team will carry out preliminary cleaning to maintain data quality. This includes addressing missing values, verifying and correcting data types, and resolving any anomalies resulting from maintenance or special events. - We will also validate the integrity of the pre-applied filters to ensure the dataset’s relevance to our analysis.</p>
+<p><strong>2. Exploratory Data Analysis (EDA):</strong> - Utilizing <code>dplyr</code> for data wrangling and <code>ggplot2</code> for visualization, we will conduct an initial exploration to grasp the dataset’s structure and content. - We will generate summary statistics that will aid in understanding the distribution of ridership and spotlighting any immediate patterns or outliers within the data.</p>
+<p><strong>3. Traffic Analysis by Stations and Boroughs:</strong> - Data will be summarized by stations using R’s aggregation functions to pinpoint those with the most significant foot traffic. - A borough-level analysis will be performed to identify which parts of the city show higher activity levels. - Findings will be visualized using bar charts and maps to provide clear and engaging representations of our data.</p>
+<p><strong>4. Time Series Analysis:</strong> - We will create time series plots, enabling us to examine the variations in subway traffic patterns across different days and times.</p>
+<p><strong>5. Peak Period Identification:</strong> - By aggregating ridership data, we aim to identify peak travel times accurately. - Clustering techniques, such as k-means clustering, will be employed to categorize time periods into high, medium, and low ridership clusters.</p>
+<p><strong>6. Statistical Testing:</strong> - We will apply chi-squared tests and other relevant statistical tests to investigate the relationships between categorical variables such as payment method and ridership, allowing us to draw meaningful inferences from the data.</p>
+<p><strong>7. Results Interpretation and Conclusion:</strong> - The results will be interpreted in light of the original research questions posed. - A detailed discussion of our findings will be provided, considering the implications for urban planning and policy-making. - Our conclusion will summarize the study’s outcomes and propose recommendations for further research or potential applications of our findings in real-world scenarios.</p>
+</section>
 </section>
 <section id="missing-value-analysis" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</h2>
+<p>In our examination of the MTA dataset, a focused analysis on the presence of missing values has been conducted. Our findings are encapsulated in two key visualizations: a bar chart and a proportional representation of missing data by borough.</p>
+<p>The bar chart delineates a significant prevalence of missing entries predominantly in the New.York.Zip.Codes variable, towering over the Counties variable, which exhibits a relatively minor quantity of missing data. This pattern indicates that while most data points are complete for the majority of the variables, the collection or recording of zip codes has been inconsistent.</p>
+<p>Upon further investigation, portrayed in the proportional missing data by borough graph, it is evident that the missingness in New.York.Zip.Codes does not discriminate by borough, suggesting that the lack of zip code data is a systemic issue rather than a localized anomaly. The Counties variable, although also affected by missingness, shows a much lesser degree of absence across the boroughs.</p>
+<p>Given the nature of our research questions, which prioritize the analysis of subway traffic patterns, station popularity, and peak travel times, the geographical variables—New.York.Zip.Codes and Counties—are peripheral. Consequently, the decision has been made to exclude these variables from the dataset. This strategic exclusion is aimed at streamlining the analysis, ensuring clarity, and maintaining focus on the variables most critical to our research objectives.</p>
 
 
 </section>
