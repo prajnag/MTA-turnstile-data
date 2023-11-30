@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -178,12 +212,13 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Time Filter: We filtered the data to include only the entries between July 1, 2022, and December 31, 2022. This time range focuses the analysis on the second half of the year, which may help in observing trends related to seasonal ridership changes or responses to specific events within that timeframe.</p></li>
 <li><p>Transfer Filter: We include any records where the number of transfers is zero. We are focusing on entries where riders did not switch from one subway line to another during their trip. This is useful for analyzing direct trips and could indicate stations with a high number of origin or destination traffic without intermediate transfers.</p></li>
 <li><p>Ridership Filter: We have included only those records where the ridership is greater than 20. This filter serves to remove outliers where stations have extremely low traffic, which might not be significant for broad pattern analysis. It ensures that the data reflects stations and times with a minimal level of activity, thereby focusing on periods and places of substantive use.</p></li>
+<li><p>Column Removal: We have opted to exclude the ‘latitude’, ‘longitude’, and ‘Georeference’ columns from the original dataset. The ‘station_complex_id’ serves as a unique identifier for each station, rendering the specific geographic coordinates unnecessary for the scope of our analysis. This decision simplifies our dataset and aligns with our focus on station-based trends without the need for precise geospatial mapping.</p></li>
 </ol>
 <section id="description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
 <section id="research-plan" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="research-plan"><span class="header-section-number">2.1.1</span> Research Plan</h3>
-<p><strong>1. Data Import and Cleaning:</strong> - We will import the MTA Turnstile dataset into R utilizing the <code>readr</code> package for seamless data reading. - Our team will carry out preliminary cleaning to maintain data quality. This includes addressing missing values, verifying and correcting data types, and resolving any anomalies resulting from maintenance or special events. - We will also validate the integrity of the pre-applied filters to ensure the dataset’s relevance to our analysis.</p>
+<p><strong>1. Data Import and Cleaning:</strong> - We will import the MTA Turnstile dataset into R utilizing the <code>readr</code> package for seamless data reading. - We will carry out preliminary cleaning to maintain data quality. This includes addressing missing values, verifying and correcting data types, and resolving any anomalies resulting from maintenance or special events. - We will also validate the integrity of the pre-applied filters to ensure the dataset’s relevance to our analysis.</p>
 <p><strong>2. Exploratory Data Analysis (EDA):</strong> - Utilizing <code>dplyr</code> for data wrangling and <code>ggplot2</code> for visualization, we will conduct an initial exploration to grasp the dataset’s structure and content. - We will generate summary statistics that will aid in understanding the distribution of ridership and spotlighting any immediate patterns or outliers within the data.</p>
 <p><strong>3. Traffic Analysis by Stations and Boroughs:</strong> - Data will be summarized by stations using R’s aggregation functions to pinpoint those with the most significant foot traffic. - A borough-level analysis will be performed to identify which parts of the city show higher activity levels. - Findings will be visualized using bar charts and maps to provide clear and engaging representations of our data.</p>
 <p><strong>4. Time Series Analysis:</strong> - We will create time series plots, enabling us to examine the variations in subway traffic patterns across different days and times.</p>
@@ -197,7 +232,55 @@ ul.task-list li input[type="checkbox"] {
 <p>In our examination of the MTA dataset, a focused analysis on the presence of missing values has been conducted. Our findings are encapsulated in two key visualizations: a bar chart and a proportional representation of missing data by borough.</p>
 <p>The bar chart delineates a significant prevalence of missing entries predominantly in the New.York.Zip.Codes variable, towering over the Counties variable, which exhibits a relatively minor quantity of missing data. This pattern indicates that while most data points are complete for the majority of the variables, the collection or recording of zip codes has been inconsistent.</p>
 <p>Upon further investigation, portrayed in the proportional missing data by borough graph, it is evident that the missingness in New.York.Zip.Codes does not discriminate by borough, suggesting that the lack of zip code data is a systemic issue rather than a localized anomaly. The Counties variable, although also affected by missingness, shows a much lesser degree of absence across the boroughs.</p>
-<p>Given the nature of our research questions, which prioritize the analysis of subway traffic patterns, station popularity, and peak travel times, the geographical variables—New.York.Zip.Codes and Counties—are peripheral. Consequently, the decision has been made to exclude these variables from the dataset. This strategic exclusion is aimed at streamlining the analysis, ensuring clarity, and maintaining focus on the variables most critical to our research objectives.</p>
+<p>Considering our project’s goals to study subway usage trends, the importance of stations, and busy travel times, the detailed location information from zip codes and counties isn’t really necessary. We’ve decided that the broader location data from the ‘borough’ variable is enough for our geographical analysis. So, we’re going to take out the ‘New.York.Zip.Codes’ and ‘Counties’ variables to keep our analysis clear.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mtadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"mtadata.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>missing_values_count <span class="ot">&lt;-</span> <span class="fu">colSums</span>(<span class="fu">is.na</span>(mtadata))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>missing_values_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">variable =</span> <span class="fu">names</span>(missing_values_count), <span class="at">missing_count =</span> missing_values_count)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(missing_values_df, <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> missing_count)) <span class="sc">+</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Variables"</span>, <span class="at">y =</span> <span class="st">"Count of Missing Values"</span>) <span class="sc">+</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Missing Data Count per Variable"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mtadata<span class="sc">$</span>Missing_Zip_Code <span class="ot">&lt;-</span> <span class="fu">is.na</span>(mtadata<span class="sc">$</span>New.York.Zip.Codes)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>mtadata<span class="sc">$</span>Missing_Zip_Code <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>mtadata<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>missing_by_borough <span class="ot">&lt;-</span> mtadata <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(borough) <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Proportion_Missing_Zip =</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(New.York.Zip.Codes)),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Proportion_Missing_County =</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(Counties))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"Proportion_Missing"</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Proportion_Missing"</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(missing_by_borough, <span class="fu">aes</span>(<span class="at">x =</span> borough, <span class="at">y =</span> Proportion_Missing, <span class="at">fill =</span> Variable)) <span class="sc">+</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>()) <span class="sc">+</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Borough"</span>, <span class="at">y =</span> <span class="st">"Proportion Missing"</span>, <span class="at">title =</span> <span class="st">"Proportion of Missing Data by Borough"</span>) <span class="sc">+</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 </section>

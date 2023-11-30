@@ -15,12 +15,14 @@ The applied filters serve to narrow down the dataset to a manageable and relevan
 
 3. Ridership Filter: We have included only those records where the ridership is greater than 20. This filter serves to remove outliers where stations have extremely low traffic, which might not be significant for broad pattern analysis. It ensures that the data reflects stations and times with a minimal level of activity, thereby focusing on periods and places of substantive use.
 
+4. Column Removal: We have opted to exclude the 'latitude', 'longitude', and 'Georeference' columns from the original dataset. The 'station_complex_id' serves as a unique identifier for each station, rendering the specific geographic coordinates unnecessary for the scope of our analysis. This decision simplifies our dataset and aligns with our focus on station-based trends without the need for precise geospatial mapping.
+
 ## Description
 
 ### Research Plan
 **1. Data Import and Cleaning:**
 - We will import the MTA Turnstile dataset into R utilizing the `readr` package for seamless data reading.
-- Our team will carry out preliminary cleaning to maintain data quality. This includes addressing missing values, verifying and correcting data types, and resolving any anomalies resulting from maintenance or special events.
+- We will carry out preliminary cleaning to maintain data quality. This includes addressing missing values, verifying and correcting data types, and resolving any anomalies resulting from maintenance or special events.
 - We will also validate the integrity of the pre-applied filters to ensure the dataset's relevance to our analysis.
 
 **2. Exploratory Data Analysis (EDA):**
@@ -54,5 +56,51 @@ The bar chart delineates a significant prevalence of missing entries predominant
 
 Upon further investigation, portrayed in the proportional missing data by borough graph, it is evident that the missingness in New.York.Zip.Codes does not discriminate by borough, suggesting that the lack of zip code data is a systemic issue rather than a localized anomaly. The Counties variable, although also affected by missingness, shows a much lesser degree of absence across the boroughs.
 
-Given the nature of our research questions, which prioritize the analysis of subway traffic patterns, station popularity, and peak travel times, the geographical variables—New.York.Zip.Codes and Counties—are peripheral. Consequently, the decision has been made to exclude these variables from the dataset. This strategic exclusion is aimed at streamlining the analysis, ensuring clarity, and maintaining focus on the variables most critical to our research objectives.
+Considering our project's goals to study subway usage trends, the importance of stations, and busy travel times, the detailed location information from zip codes and counties isn't really necessary. We've decided that the broader location data from the 'borough' variable is enough for our geographical analysis. So, we're going to take out the 'New.York.Zip.Codes' and 'Counties' variables to keep our analysis clear.
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(mice)
+library(reshape2)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
+missing_values_count <- colSums(is.na(mtadata))
+missing_values_df <- data.frame(variable = names(missing_values_count), missing_count = missing_values_count)
+ggplot(missing_values_df, aes(x = variable, y = missing_count)) +
+  geom_bar(stat = "identity", fill = 'blue') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Variables", y = "Count of Missing Values") +
+  ggtitle("Missing Data Count per Variable")
+
+mtadata$Missing_Zip_Code <- is.na(mtadata$New.York.Zip.Codes)
+
+
+mtadata$Missing_Zip_Code <- NULL
+mtadata$timestamp <- NULL
+
+missing_by_borough <- mtadata %>%
+  group_by(borough) %>%
+  summarise(
+    Proportion_Missing_Zip = mean(is.na(New.York.Zip.Codes)),
+    Proportion_Missing_County = mean(is.na(Counties))
+  ) %>%
+  pivot_longer(
+    cols = starts_with("Proportion_Missing"),
+    names_to = "Variable",
+    values_to = "Proportion_Missing"
+  )
+
+
+ggplot(missing_by_borough, aes(x = borough, y = Proportion_Missing, fill = Variable)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  labs(x = "Borough", y = "Proportion Missing", title = "Proportion of Missing Data by Borough") +
+  scale_fill_brewer(palette = "Set1") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
