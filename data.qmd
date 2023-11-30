@@ -16,6 +16,7 @@ The applied filters serve to narrow down the dataset to a manageable and relevan
 3. Ridership Filter: We have included only those records where the ridership is greater than 20. This filter serves to remove outliers where stations have extremely low traffic, which might not be significant for broad pattern analysis. It ensures that the data reflects stations and times with a minimal level of activity, thereby focusing on periods and places of substantive use.
 
 ## Description
+
 ### Research Plan
 **1. Data Import and Cleaning:**
 - We will import the MTA Turnstile dataset into R utilizing the `readr` package for seamless data reading.
@@ -47,3 +48,11 @@ The applied filters serve to narrow down the dataset to a manageable and relevan
 - Our conclusion will summarize the study's outcomes and propose recommendations for further research or potential applications of our findings in real-world scenarios.
 
 ## Missing value analysis
+In our examination of the MTA dataset, a focused analysis on the presence of missing values has been conducted. Our findings are encapsulated in two key visualizations: a bar chart and a proportional representation of missing data by borough.
+
+The bar chart delineates a significant prevalence of missing entries predominantly in the New.York.Zip.Codes variable, towering over the Counties variable, which exhibits a relatively minor quantity of missing data. This pattern indicates that while most data points are complete for the majority of the variables, the collection or recording of zip codes has been inconsistent.
+
+Upon further investigation, portrayed in the proportional missing data by borough graph, it is evident that the missingness in New.York.Zip.Codes does not discriminate by borough, suggesting that the lack of zip code data is a systemic issue rather than a localized anomaly. The Counties variable, although also affected by missingness, shows a much lesser degree of absence across the boroughs.
+
+Given the nature of our research questions, which prioritize the analysis of subway traffic patterns, station popularity, and peak travel times, the geographical variables—New.York.Zip.Codes and Counties—are peripheral. Consequently, the decision has been made to exclude these variables from the dataset. This strategic exclusion is aimed at streamlining the analysis, ensuring clarity, and maintaining focus on the variables most critical to our research objectives.
+
