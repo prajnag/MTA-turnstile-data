@@ -58,6 +58,7 @@ Upon further investigation, portrayed in the proportional missing data by boroug
 
 Considering our project's goals to study subway usage trends, the importance of stations, and busy travel times, the detailed location information from zip codes and counties isn't really necessary. We've decided that the broader location data from the 'borough' variable is enough for our geographical analysis. So, we're going to take out the 'New.York.Zip.Codes' and 'Counties' variables to keep our analysis clear.
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
@@ -104,3 +105,4 @@ ggplot(missing_by_borough, aes(x = borough, y = Proportion_Missing, fill = Varia
   scale_fill_brewer(palette = "Set1") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
