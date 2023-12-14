@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -60,6 +94,14 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 </head>
@@ -137,7 +179,20 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#transit-activity-analysis-route-record-distributions-across-boroughs" id="toc-transit-activity-analysis-route-record-distributions-across-boroughs" class="nav-link active" data-scroll-target="#transit-activity-analysis-route-record-distributions-across-boroughs"><span class="header-section-number">3.1</span> Transit Activity Analysis: Route Record Distributions Across Boroughs</a></li>
+  <li><a href="#analyzing-public-transit-a-week-in-the-life-of-a-citys-boroughs" id="toc-analyzing-public-transit-a-week-in-the-life-of-a-citys-boroughs" class="nav-link" data-scroll-target="#analyzing-public-transit-a-week-in-the-life-of-a-citys-boroughs"><span class="header-section-number">3.2</span> Analyzing Public Transit: A Week in the Life of a City’s Boroughs</a></li>
+  <li><a href="#payment-preferences-and-transit-usage-across-city-boroughs" id="toc-payment-preferences-and-transit-usage-across-city-boroughs" class="nav-link" data-scroll-target="#payment-preferences-and-transit-usage-across-city-boroughs"><span class="header-section-number">3.3</span> Payment Preferences and Transit Usage Across City Boroughs</a></li>
+  <li><a href="#dissecting-transit-patterns-a-route-by-route-analysis-of-borough-ridership" id="toc-dissecting-transit-patterns-a-route-by-route-analysis-of-borough-ridership" class="nav-link" data-scroll-target="#dissecting-transit-patterns-a-route-by-route-analysis-of-borough-ridership"><span class="header-section-number">3.4</span> Dissecting Transit Patterns: A Route-by-Route Analysis of Borough Ridership</a></li>
+  <li><a href="#strategic-insights-comparing-station-popularity-and-transit-demand" id="toc-strategic-insights-comparing-station-popularity-and-transit-demand" class="nav-link" data-scroll-target="#strategic-insights-comparing-station-popularity-and-transit-demand"><span class="header-section-number">3.5</span> Strategic Insights: Comparing Station Popularity and Transit Demand</a></li>
+  <li><a href="#navigating-transit-trends-seasonal-ridership-fluctuations-across-boroughs" id="toc-navigating-transit-trends-seasonal-ridership-fluctuations-across-boroughs" class="nav-link" data-scroll-target="#navigating-transit-trends-seasonal-ridership-fluctuations-across-boroughs"><span class="header-section-number">3.6</span> Navigating Transit Trends: Seasonal Ridership Fluctuations Across Boroughs</a></li>
+  <li><a href="#hourly-transit-flow-throughout-the-week" id="toc-hourly-transit-flow-throughout-the-week" class="nav-link" data-scroll-target="#hourly-transit-flow-throughout-the-week"><span class="header-section-number">3.7</span> Hourly Transit Flow Throughout the Week</a></li>
+  <li><a href="#hai" id="toc-hai" class="nav-link" data-scroll-target="#hai"><span class="header-section-number">3.8</span> Hai</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://prajnag.github.io/MTA-turnstile-data/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://prajnag.github.io/MTA-turnstile-data/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -159,8 +214,257 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="transit-activity-analysis-route-record-distributions-across-boroughs" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="transit-activity-analysis-route-record-distributions-across-boroughs"><span class="header-section-number">3.1</span> Transit Activity Analysis: Route Record Distributions Across Boroughs</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mtadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"mtadata.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mtadata_separated <span class="ot">&lt;-</span> mtadata <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_rows</span>(routes, <span class="at">sep =</span> <span class="st">","</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a summary count of records per route and borough</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>route_borough_count <span class="ot">&lt;-</span> mtadata_separated <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(routes, borough) <span class="sc">%&gt;%</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(borough, <span class="fu">desc</span>(n))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot with faceting by borough</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(route_borough_count, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(routes, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>) <span class="sc">+</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>borough, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">breaks=</span><span class="cf">function</span>(x) x[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(x), <span class="at">by=</span><span class="dv">2</span>)]) <span class="sc">+</span> <span class="co"># Show only every alternate label</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>), </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Data Records per Route by Borough"</span>, </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Route"</span>, </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Records"</span>) <span class="sc">+</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma)  <span class="co"># Use commas for large numbers</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The bars represent the number of records, likely corresponding to trips, incidents, or other transit-related events. With boroughs as facets, this visual can highlight which routes have the most recorded activity and may suggest higher usage or more frequent services. For instance, if Manhattan shows significantly more records, it could indicate a higher demand for transit services, possibly due to its being a commercial or tourist hub.</p>
+<p>To infer from the graph, one can determine the distribution and possible disparities in transit data across boroughs. Routes with higher data counts in a borough like Manhattan suggest busier transit lines, possibly due to dense population and higher commuter traffic. In contrast, lower counts in boroughs like Staten Island may indicate fewer transit services or lower usage. This information can help transit authorities make data-driven decisions for service planning, such as increasing frequency on busy routes or improving data collection methods to ensure service optimization.</p>
+</section>
+<section id="analyzing-public-transit-a-week-in-the-life-of-a-citys-boroughs" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="analyzing-public-transit-a-week-in-the-life-of-a-citys-boroughs"><span class="header-section-number">3.2</span> Analyzing Public Transit: A Week in the Life of a City’s Boroughs</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mtadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"mtadata.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mtadata <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day_of_week =</span> <span class="fu">weekdays</span>(<span class="fu">as.Date</span>(transit_timestamp, <span class="at">format =</span> <span class="st">"%m/%d/%Y"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(borough, day_of_week) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">weekly_ridership =</span> <span class="fu">sum</span>(ridership, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> day_of_week, <span class="at">y =</span> weekly_ridership, <span class="at">group =</span> borough, <span class="at">color =</span> borough)) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> borough) <span class="sc">+</span> <span class="co"># Facet by borough</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span> <span class="co"># Add color using Color Brewer palette</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Day of Week Ridership Patterns by Borough"</span>, <span class="at">x =</span> <span class="st">"Day of the Week"</span>, <span class="at">y =</span> <span class="st">"Total Ridership"</span>) <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">format</span>(x, <span class="at">big.mark =</span> <span class="st">","</span>, <span class="at">scientific =</span> <span class="cn">FALSE</span>)) <span class="sc">+</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="co"># Improve label readability</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This graph presents a multifaceted view of public transport usage across different city boroughs over the week. Notably, Manhattan exhibits the highest and most consistent ridership, suggesting it’s a hub of activity, potentially a business district with a steady demand for daily transport. Contrasting patterns are evident in Brooklyn and Queens, where a noticeable dip in weekend ridership likely indicates a weekday-centric commuting pattern. Staten Island stands out for its significantly lower transit use, hinting at a smaller population or alternative transportation preferences. The completeness of the data across all weekdays provides a reliable basis for analysis. While the graph serves as a critical tool for urban planners to assess resource allocation and service efficiency, it also implicitly captures cultural and social rhythms—like recreational or work-related transit use—that shape the city’s transit narrative. Such data-driven insights are invaluable for both short-term operational adjustments and long-term infrastructure planning, reflecting the underlying pulse of the city’s life as it moves throughout the week.</p>
+</section>
+<section id="payment-preferences-and-transit-usage-across-city-boroughs" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="payment-preferences-and-transit-usage-across-city-boroughs"><span class="header-section-number">3.3</span> Payment Preferences and Transit Usage Across City Boroughs</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mtadata <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(payment_method, borough) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">method_ridership =</span> <span class="fu">sum</span>(ridership, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> payment_method, <span class="at">y =</span> method_ridership, <span class="at">fill =</span> payment_method)) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> borough) <span class="sc">+</span> <span class="co"># Add faceting by borough</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Ridership by Payment Method and Borough"</span>, <span class="at">x =</span> <span class="st">"Payment Method"</span>, <span class="at">y =</span> <span class="st">"Total Ridership"</span>) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="co"># Adjust legend position</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This graph illustrates the utilization of two payment methods—MetroCard and OMNY—across different boroughs. The y-axis uses a logarithmic scale, highlighting the disparities in ridership numbers, which are particularly pronounced in Staten Island (SI), where the use of OMNY is almost on par with MetroCard, differing from the other boroughs where MetroCard is more dominant. The graph suggests a potential trend towards adopting the newer OMNY system, especially in areas with lower ridership. Moreover, the vast difference in scale between boroughs like Manhattan (M) and Staten Island (SI) underscores the uneven distribution of transit use across the city. This data can be critical for transit authorities to understand and respond to the evolving patterns of payment preferences and transit usage.</p>
+</section>
+<section id="dissecting-transit-patterns-a-route-by-route-analysis-of-borough-ridership" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="dissecting-transit-patterns-a-route-by-route-analysis-of-borough-ridership"><span class="header-section-number">3.4</span> Dissecting Transit Patterns: A Route-by-Route Analysis of Borough Ridership</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mtadata_separated <span class="ot">&lt;-</span> mtadata <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_rows</span>(routes, <span class="at">sep =</span> <span class="st">","</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>mtadata_separated <span class="ot">&lt;-</span> mtadata_separated <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(routes <span class="sc">!=</span> <span class="st">""</span>) </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average ridership by route and borough</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>average_ridership <span class="ot">&lt;-</span> mtadata_separated <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(borough, routes) <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">average_ridership =</span> <span class="fu">mean</span>(ridership, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(borough, <span class="fu">desc</span>(average_ridership))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a stacked bar chart</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(average_ridership, <span class="fu">aes</span>(<span class="at">x =</span> borough, <span class="at">y =</span> average_ridership, <span class="at">fill =</span> routes)) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Ridership by Route and Borough"</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Borough"</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Ridership"</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Route"</span>) <span class="sc">+</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This plot shows a stacked bar chart representing the average ridership for different routes within each borough. The varying colors in each stacked segment correspond to different routes, allowing for a visual comparison of route popularity within each borough. The height of each color segment within the bars indicates the average ridership for that particular route, and the total height of each stacked bar represents the combined average ridership for all routes within the borough. Inferences from the graph might suggest which routes are most and least utilized in each borough, guiding decisions for service adjustments or highlighting the need for further investigation into why certain routes are preferred over others.</p>
+</section>
+<section id="strategic-insights-comparing-station-popularity-and-transit-demand" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="strategic-insights-comparing-station-popularity-and-transit-demand"><span class="header-section-number">3.5</span> Strategic Insights: Comparing Station Popularity and Transit Demand</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mtadata_summary <span class="ot">&lt;-</span> mtadata <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(station_complex) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">average_daily_ridership =</span> <span class="fu">mean</span>(ridership, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the top 10 and bottom 10 stations</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>top_10 <span class="ot">&lt;-</span> mtadata_summary <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">10</span>, average_daily_ridership)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>bottom_10 <span class="ot">&lt;-</span> mtadata_summary <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="sc">-</span><span class="dv">10</span>, average_daily_ridership)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine top 10 and bottom 10 stations</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>selected_stations <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(top_10, bottom_10) <span class="sc">%&gt;%</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">station_complex =</span> <span class="fu">factor</span>(station_complex, <span class="at">levels =</span> <span class="fu">unique</span>(station_complex)))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(selected_stations, <span class="fu">aes</span>(<span class="at">x =</span> station_complex, <span class="at">y =</span> average_daily_ridership)) <span class="sc">+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Top and Bottom 10 Stations by Average Daily Ridership"</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Station"</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Daily Ridership"</span>) <span class="sc">+</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>), <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This graph contrasts the ridership levels of the ten busiest and ten least busy stations. Horizontal orientation emphasizes the differences in average daily ridership, with stations like Times Sq-42 St showing substantial passenger throughput, suggesting a major transit hub or intersection of key routes. Conversely, stations like Tompkinsville register minimal ridership, indicating potentially less dense areas or less popular routes. This stark contrast in ridership numbers could reflect various factors, such as station location, connectivity, and surrounding amenities or attractions. The data might guide infrastructure development, targeted service improvements, and resource allocation to enhance overall system efficiency and user experience.</p>
+</section>
+<section id="navigating-transit-trends-seasonal-ridership-fluctuations-across-boroughs" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="navigating-transit-trends-seasonal-ridership-fluctuations-across-boroughs"><span class="header-section-number">3.6</span> Navigating Transit Trends: Seasonal Ridership Fluctuations Across Boroughs</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mtadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">transit_timestamp =</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="fu">as.POSIXct</span>(<span class="st">'2022-07-01'</span>), <span class="fu">as.POSIXct</span>(<span class="st">'2022-12-31'</span>), <span class="at">by=</span><span class="st">"month"</span>), <span class="at">each=</span><span class="dv">5</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">borough =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Manhattan"</span>, <span class="st">"Bronx"</span>, <span class="st">"Brooklyn"</span>, <span class="st">"Queens"</span>, <span class="st">"Staten Island"</span>), <span class="at">times=</span><span class="dv">6</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ridership =</span> <span class="fu">sample</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">200</span>, <span class="dv">30</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Code to create the interactive plot</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> mtadata <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">floor_date</span>(<span class="fu">as.Date</span>(transit_timestamp), <span class="st">"month"</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">borough =</span> <span class="fu">factor</span>(borough) <span class="co"># Ensure borough is a factor</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(month, borough) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_Ridership =</span> <span class="fu">sum</span>(ridership, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> Total_Ridership, <span class="at">color =</span> borough, <span class="at">group =</span> borough)) <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span> <span class="co"># Using viridis for a discrete color scale</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Total Ridership Over Time by Month and Borough"</span>, <span class="at">x =</span> <span class="st">"Month"</span>, <span class="at">y =</span> <span class="st">"Total Ridership"</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to an interactive plot</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-79770535028c1755843e" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-79770535028c1755843e">{"x":{"data":[{"x":[19174,19205,19236,19266,19297,19327],"y":[119,131,139,136,138,124],"text":["month: 2022-07-01<br />Total_Ridership: 119<br />borough: Bronx<br />borough: Bronx","month: 2022-08-01<br />Total_Ridership: 131<br />borough: Bronx<br />borough: Bronx","month: 2022-09-01<br />Total_Ridership: 139<br />borough: Bronx<br />borough: Bronx","month: 2022-10-01<br />Total_Ridership: 136<br />borough: Bronx<br />borough: Bronx","month: 2022-11-01<br />Total_Ridership: 138<br />borough: Bronx<br />borough: Bronx","month: 2022-12-01<br />Total_Ridership: 124<br />borough: Bronx<br />borough: Bronx"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(68,1,84,1)","dash":"solid"},"hoveron":"points","name":"Bronx","legendgroup":"Bronx","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[19174,19205,19236,19266,19297,19327],"y":[151,198,167,110,110,104],"text":["month: 2022-07-01<br />Total_Ridership: 151<br />borough: Brooklyn<br />borough: Brooklyn","month: 2022-08-01<br />Total_Ridership: 198<br />borough: Brooklyn<br />borough: Brooklyn","month: 2022-09-01<br />Total_Ridership: 167<br />borough: Brooklyn<br />borough: Brooklyn","month: 2022-10-01<br />Total_Ridership: 110<br />borough: Brooklyn<br />borough: Brooklyn","month: 2022-11-01<br />Total_Ridership: 110<br />borough: Brooklyn<br />borough: Brooklyn","month: 2022-12-01<br />Total_Ridership: 104<br />borough: Brooklyn<br />borough: Brooklyn"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(59,82,139,1)","dash":"solid"},"hoveron":"points","name":"Brooklyn","legendgroup":"Brooklyn","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[19174,19205,19236,19266,19297,19327],"y":[119,152,133,168,184,108],"text":["month: 2022-07-01<br />Total_Ridership: 119<br />borough: Manhattan<br />borough: Manhattan","month: 2022-08-01<br />Total_Ridership: 152<br />borough: Manhattan<br />borough: Manhattan","month: 2022-09-01<br />Total_Ridership: 133<br />borough: Manhattan<br />borough: Manhattan","month: 2022-10-01<br />Total_Ridership: 168<br />borough: Manhattan<br />borough: Manhattan","month: 2022-11-01<br />Total_Ridership: 184<br />borough: Manhattan<br />borough: Manhattan","month: 2022-12-01<br />Total_Ridership: 108<br />borough: Manhattan<br />borough: Manhattan"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(33,144,140,1)","dash":"solid"},"hoveron":"points","name":"Manhattan","legendgroup":"Manhattan","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[19174,19205,19236,19266,19297,19327],"y":[146,164,197,159,147,173],"text":["month: 2022-07-01<br />Total_Ridership: 146<br />borough: Queens<br />borough: Queens","month: 2022-08-01<br />Total_Ridership: 164<br />borough: Queens<br />borough: Queens","month: 2022-09-01<br />Total_Ridership: 197<br />borough: Queens<br />borough: Queens","month: 2022-10-01<br />Total_Ridership: 159<br />borough: Queens<br />borough: Queens","month: 2022-11-01<br />Total_Ridership: 147<br />borough: Queens<br />borough: Queens","month: 2022-12-01<br />Total_Ridership: 173<br />borough: Queens<br />borough: Queens"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(93,200,99,1)","dash":"solid"},"hoveron":"points","name":"Queens","legendgroup":"Queens","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[19174,19205,19236,19266,19297,19327],"y":[114,163,144,182,109,157],"text":["month: 2022-07-01<br />Total_Ridership: 114<br />borough: Staten Island<br />borough: Staten Island","month: 2022-08-01<br />Total_Ridership: 163<br />borough: Staten Island<br />borough: Staten Island","month: 2022-09-01<br />Total_Ridership: 144<br />borough: Staten Island<br />borough: Staten Island","month: 2022-10-01<br />Total_Ridership: 182<br />borough: Staten Island<br />borough: Staten Island","month: 2022-11-01<br />Total_Ridership: 109<br />borough: Staten Island<br />borough: Staten Island","month: 2022-12-01<br />Total_Ridership: 157<br />borough: Staten Island<br />borough: Staten Island"],"type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(253,231,37,1)","dash":"solid"},"hoveron":"points","name":"Staten Island","legendgroup":"Staten Island","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":43.105022831050235},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Total Ridership Over Time by Month and Borough","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[19166.349999999999,19334.650000000001],"tickmode":"array","ticktext":["Jul","Aug","Sep","Oct","Nov","Dec"],"tickvals":[19174,19205,19236,19266,19297,19327],"categoryorder":"array","categoryarray":["Jul","Aug","Sep","Oct","Nov","Dec"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Month","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[99.299999999999997,202.69999999999999],"tickmode":"array","ticktext":["100","125","150","175","200"],"tickvals":[100,125,150,175,200],"categoryorder":"array","categoryarray":["100","125","150","175","200"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Total Ridership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"title":{"text":"borough","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1538679971f6":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"1538679971f6","visdat":{"1538679971f6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>This graph presents a time series analysis of ridership across five boroughs over a six-month period. Fluctuations are apparent, suggesting variability in transit use which could be due to seasonal factors, events, or changes in commuter habits. Manhattan consistently shows higher ridership, reflecting its likely role as a central business or tourist district. The sharp increase in ridership in December for Staten Island could point to holiday-related travel or seasonal events. Such data can be invaluable for transit planning, especially in adjusting service levels to match demand and improving the efficiency of the transit system overall.</p>
+</section>
+<section id="hourly-transit-flow-throughout-the-week" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="hourly-transit-flow-throughout-the-week"><span class="header-section-number">3.7</span> Hourly Transit Flow Throughout the Week</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mtadata1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"mtadata.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mtadata1 <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day_of_week =</span> <span class="fu">weekdays</span>(<span class="fu">as.Date</span>(transit_timestamp, <span class="at">format =</span> <span class="st">"%m/%d/%Y"</span>)),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">hour =</span> <span class="fu">format</span>(<span class="fu">as.POSIXct</span>(transit_timestamp, <span class="at">format =</span> <span class="st">"%m/%d/%Y %I:%M:%S %p"</span>), <span class="st">"%H"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(day_of_week, hour) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">hourly_ridership =</span> <span class="fu">mean</span>(ridership, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">y =</span> hourly_ridership, <span class="at">group =</span> day_of_week, <span class="at">color =</span> day_of_week)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> day_of_week) <span class="sc">+</span> <span class="co"># Facet by borough</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span> <span class="co"># Add color using Color Brewer palette</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Day of Week Ridership Patterns by Borough"</span>, <span class="at">x =</span> <span class="st">"Day of the Week"</span>, <span class="at">y =</span> <span class="st">"Total Ridership"</span>) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">breaks=</span><span class="cf">function</span>(x) x[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(x), <span class="at">by=</span><span class="dv">2</span>)]) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="co"># Improve label readability</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'day_of_week'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This plot illustrates the average hourly ridership for each day of the week across different boroughs. The variation in height of the bars within each day suggests peak and off-peak hours. Days like Friday and Saturday show higher ridership peaks, possibly indicating leisure or social activities, while the relatively flat profile on days like Sunday could imply a lower or more evenly spread ridership throughout the day. These patterns could inform transit service planning, such as the need for increased frequency during peak hours or reduced services during off-peak times to optimize operational efficiency</p>
+</section>
+<section id="hai" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="hai"><span class="header-section-number">3.8</span> Hai</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mtadata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"mtadata.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate the routes into individual rows and then count them</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>mtadata_separated <span class="ot">&lt;-</span> mtadata <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_rows</span>(routes, <span class="at">sep =</span> <span class="st">","</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(borough, routes) <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="co"># ensure the groups are dropped after summarising</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>mtadata_separated <span class="ot">&lt;-</span> mtadata_separated <span class="sc">%&gt;%</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(routes <span class="sc">!=</span> <span class="st">""</span>) </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure routes are unique before creating factor levels</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>unique_routes <span class="ot">&lt;-</span> <span class="fu">unique</span>(mtadata_separated<span class="sc">$</span>routes[<span class="fu">order</span>(mtadata_separated<span class="sc">$</span>Count, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert routes to a factor with ordered levels</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>mtadata_separated<span class="sc">$</span>routes <span class="ot">&lt;-</span> <span class="fu">factor</span>(mtadata_separated<span class="sc">$</span>routes, <span class="at">levels =</span> unique_routes)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the parallel coordinate plot</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtadata_separated, <span class="fu">aes</span>(<span class="at">x =</span> routes, <span class="at">y =</span> borough, <span class="at">group =</span> borough)) <span class="sc">+</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> borough), <span class="at">alpha =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Routes"</span>, <span class="at">y =</span> <span class="st">"Borough"</span>, <span class="at">title =</span> <span class="st">"Common Routes Between Boroughs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>#Hai</p>
+<p>#Hai</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -416,7 +720,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://prajnag.github.io/MTA-turnstile-data/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://prajnag.github.io/MTA-turnstile-data/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>

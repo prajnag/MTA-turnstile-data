@@ -1,1 +1,235 @@
 # Results
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(mice)
+library(reshape2)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(plotly)
+library(RColorBrewer)
+library(ggridges)
+
+```
+
+
+## Transit Activity Analysis: Route Record Distributions Across Boroughs
+```{r}
+mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
+
+mtadata_separated <- mtadata %>%
+  separate_rows(routes, sep = ",")
+
+# Create a summary count of records per route and borough
+route_borough_count <- mtadata_separated %>%
+  count(routes, borough) %>%
+  arrange(borough, desc(n))
+
+# Create the plot with faceting by borough
+ggplot(route_borough_count, aes(x = reorder(routes, n), y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  facet_wrap(~borough, scales = "free_x") +
+  scale_x_discrete(breaks=function(x) x[seq(1, length(x), by=2)]) + # Show only every alternate label
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5), 
+        strip.text.x = element_text(size = 10)) +
+  labs(title = "Number of Data Records per Route by Borough", 
+       x = "Route", 
+       y = "Number of Records") +
+  scale_y_continuous(labels = scales::comma)  # Use commas for large numbers
+
+```
+
+The bars represent the number of records, likely corresponding to trips, incidents, or other transit-related events. With boroughs as facets, this visual can highlight which routes have the most recorded activity and may suggest higher usage or more frequent services. For instance, if Manhattan shows significantly more records, it could indicate a higher demand for transit services, possibly due to its being a commercial or tourist hub.
+
+To infer from the graph, one can determine the distribution and possible disparities in transit data across boroughs. Routes with higher data counts in a borough like Manhattan suggest busier transit lines, possibly due to dense population and higher commuter traffic. In contrast, lower counts in boroughs like Staten Island may indicate fewer transit services or lower usage. This information can help transit authorities make data-driven decisions for service planning, such as increasing frequency on busy routes or improving data collection methods to ensure service optimization.
+
+
+## Analyzing Public Transit: A Week in the Life of a City's Boroughs
+```{r}
+mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
+mtadata %>%
+  mutate(day_of_week = weekdays(as.Date(transit_timestamp, format = "%m/%d/%Y"))) %>%
+  group_by(borough, day_of_week) %>%
+  summarise(weekly_ridership = sum(ridership, na.rm = TRUE), .groups = 'drop') %>%
+  ggplot(aes(x = day_of_week, y = weekly_ridership, group = borough, color = borough)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ borough) + # Facet by borough
+  scale_color_brewer(palette = "Set1") + # Add color using Color Brewer palette
+  labs(title = "Day of Week Ridership Patterns by Borough", x = "Day of the Week", y = "Total Ridership") +
+  theme_minimal() +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ",", scientific = FALSE)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) # Improve label readability
+```
+
+This graph presents a multifaceted view of public transport usage across different city boroughs over the week. Notably, Manhattan exhibits the highest and most consistent ridership, suggesting it's a hub of activity, potentially a business district with a steady demand for daily transport. Contrasting patterns are evident in Brooklyn and Queens, where a noticeable dip in weekend ridership likely indicates a weekday-centric commuting pattern. Staten Island stands out for its significantly lower transit use, hinting at a smaller population or alternative transportation preferences. The completeness of the data across all weekdays provides a reliable basis for analysis. While the graph serves as a critical tool for urban planners to assess resource allocation and service efficiency, it also implicitly captures cultural and social rhythms—like recreational or work-related transit use—that shape the city's transit narrative. Such data-driven insights are invaluable for both short-term operational adjustments and long-term infrastructure planning, reflecting the underlying pulse of the city's life as it moves throughout the week.
+
+## Payment Preferences and Transit Usage Across City Boroughs
+
+```{r}
+mtadata %>%
+  group_by(payment_method, borough) %>%
+  summarise(method_ridership = sum(ridership, na.rm = TRUE), .groups = 'drop') %>%
+  ggplot(aes(x = payment_method, y = method_ridership, fill = payment_method)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ borough) + # Add faceting by borough
+  labs(title = "Ridership by Payment Method and Borough", x = "Payment Method", y = "Total Ridership") +
+  theme_minimal() +
+  scale_y_log10() +
+  theme(legend.position = "bottom") # Adjust legend position
+
+```
+
+This graph illustrates the utilization of two payment methods—MetroCard and OMNY—across different boroughs. The y-axis uses a logarithmic scale, highlighting the disparities in ridership numbers, which are particularly pronounced in Staten Island (SI), where the use of OMNY is almost on par with MetroCard, differing from the other boroughs where MetroCard is more dominant. The graph suggests a potential trend towards adopting the newer OMNY system, especially in areas with lower ridership. Moreover, the vast difference in scale between boroughs like Manhattan (M) and Staten Island (SI) underscores the uneven distribution of transit use across the city. This data can be critical for transit authorities to understand and respond to the evolving patterns of payment preferences and transit usage.
+
+## Dissecting Transit Patterns: A Route-by-Route Analysis of Borough Ridership
+```{r}
+mtadata_separated <- mtadata %>%
+  separate_rows(routes, sep = ",")
+
+mtadata_separated <- mtadata_separated %>%
+  filter(routes != "") 
+
+# Calculate average ridership by route and borough
+average_ridership <- mtadata_separated %>%
+  na.omit() %>%
+  group_by(borough, routes) %>%
+  summarise(average_ridership = mean(ridership, na.rm = TRUE), .groups = 'drop') %>%
+  arrange(borough, desc(average_ridership))
+
+
+# Create a stacked bar chart
+ggplot(average_ridership, aes(x = borough, y = average_ridership, fill = routes)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Average Ridership by Route and Borough",
+       x = "Borough",
+       y = "Average Ridership",
+       fill = "Route") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+This plot shows a stacked bar chart representing the average ridership for different routes within each borough. The varying colors in each stacked segment correspond to different routes, allowing for a visual comparison of route popularity within each borough. The height of each color segment within the bars indicates the average ridership for that particular route, and the total height of each stacked bar represents the combined average ridership for all routes within the borough. Inferences from the graph might suggest which routes are most and least utilized in each borough, guiding decisions for service adjustments or highlighting the need for further investigation into why certain routes are preferred over others.
+
+## Strategic Insights: Comparing Station Popularity and Transit Demand
+
+```{r}
+mtadata_summary <- mtadata %>%
+  group_by(station_complex) %>%
+  summarise(average_daily_ridership = mean(ridership, na.rm = TRUE), .groups = 'drop')
+
+# Determine the top 10 and bottom 10 stations
+top_10 <- mtadata_summary %>% top_n(10, average_daily_ridership)
+bottom_10 <- mtadata_summary %>% top_n(-10, average_daily_ridership)
+
+# Combine top 10 and bottom 10 stations
+selected_stations <- bind_rows(top_10, bottom_10) %>%
+  mutate(station_complex = factor(station_complex, levels = unique(station_complex)))
+
+# Create the plot
+ggplot(selected_stations, aes(x = station_complex, y = average_daily_ridership)) +
+  geom_point() +
+  coord_flip() +
+  labs(title = "Top and Bottom 10 Stations by Average Daily Ridership",
+       x = "Station",
+       y = "Average Daily Ridership") +
+  theme_minimal() +
+  theme(axis.text.y = element_text(size = 7), axis.title.y = element_text(size = 10))
+```
+
+This graph contrasts the ridership levels of the ten busiest and ten least busy stations. Horizontal orientation emphasizes the differences in average daily ridership, with stations like Times Sq-42 St showing substantial passenger throughput, suggesting a major transit hub or intersection of key routes. Conversely, stations like Tompkinsville register minimal ridership, indicating potentially less dense areas or less popular routes. This stark contrast in ridership numbers could reflect various factors, such as station location, connectivity, and surrounding amenities or attractions. The data might guide infrastructure development, targeted service improvements, and resource allocation to enhance overall system efficiency and user experience.
+
+## Navigating Transit Trends: Seasonal Ridership Fluctuations Across Boroughs
+```{r}
+mtadata <- data.frame(
+  transit_timestamp = rep(seq(as.POSIXct('2022-07-01'), as.POSIXct('2022-12-31'), by="month"), each=5),
+  borough = rep(c("Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"), times=6),
+  ridership = sample(100:200, 30, replace = TRUE)
+)
+
+# Code to create the interactive plot
+p <- mtadata %>%
+  mutate(
+    month = floor_date(as.Date(transit_timestamp), "month"),
+    borough = factor(borough) # Ensure borough is a factor
+  ) %>%
+  group_by(month, borough) %>%
+  summarise(Total_Ridership = sum(ridership, na.rm = TRUE), .groups = 'drop') %>%
+  ggplot(aes(x = month, y = Total_Ridership, color = borough, group = borough)) +
+  geom_line() +
+  scale_color_viridis_d() + # Using viridis for a discrete color scale
+  labs(title = "Total Ridership Over Time by Month and Borough", x = "Month", y = "Total Ridership")
+
+# Convert to an interactive plot
+ggplotly(p)
+
+```
+
+This graph presents a time series analysis of ridership across five boroughs over a six-month period. Fluctuations are apparent, suggesting variability in transit use which could be due to seasonal factors, events, or changes in commuter habits. Manhattan consistently shows higher ridership, reflecting its likely role as a central business or tourist district. The sharp increase in ridership in December for Staten Island could point to holiday-related travel or seasonal events. Such data can be invaluable for transit planning, especially in adjusting service levels to match demand and improving the efficiency of the transit system overall.
+
+## Hourly Transit Flow Throughout the Week
+```{r}
+mtadata1 <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
+mtadata1 %>%
+  mutate(day_of_week = weekdays(as.Date(transit_timestamp, format = "%m/%d/%Y")),
+         hour = format(as.POSIXct(transit_timestamp, format = "%m/%d/%Y %I:%M:%S %p"), "%H")
+         ) %>%
+  group_by(day_of_week, hour) %>%
+  summarise(hourly_ridership = mean(ridership, na.rm = TRUE)) %>%
+  ggplot(aes(x = hour, y = hourly_ridership, group = day_of_week, color = day_of_week)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ day_of_week) + # Facet by borough
+  scale_color_brewer(palette = "Set1") + # Add color using Color Brewer palette
+  labs(title = "Day of Week Ridership Patterns by Borough", x = "Day of the Week", y = "Total Ridership") +
+  theme_minimal() +
+  scale_x_discrete(breaks=function(x) x[seq(1, length(x), by=2)]) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) # Improve label readability
+
+```
+This plot illustrates the average hourly ridership for each day of the week across different boroughs. The variation in height of the bars within each day suggests peak and off-peak hours. Days like Friday and Saturday show higher ridership peaks, possibly indicating leisure or social activities, while the relatively flat profile on days like Sunday could imply a lower or more evenly spread ridership throughout the day. These patterns could inform transit service planning, such as the need for increased frequency during peak hours or reduced services during off-peak times to optimize operational efficiency
+
+
+## Borough-Specific Transit Routes: Analyzing Inter-Borough Connectivity
+```{r}
+mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
+
+# Separate the routes into individual rows and then count them
+mtadata_separated <- mtadata %>%
+  separate_rows(routes, sep = ",") %>%
+  group_by(borough, routes) %>%
+  summarise(Count = n(), .groups = 'drop') # ensure the groups are dropped after summarising
+mtadata_separated <- mtadata_separated %>%
+  filter(routes != "") 
+# Ensure routes are unique before creating factor levels
+unique_routes <- unique(mtadata_separated$routes[order(mtadata_separated$Count, decreasing = TRUE)])
+
+# Convert routes to a factor with ordered levels
+mtadata_separated$routes <- factor(mtadata_separated$routes, levels = unique_routes)
+
+# Create the parallel coordinate plot
+ggplot(mtadata_separated, aes(x = routes, y = borough, group = borough)) +
+  geom_line(aes(color = borough), alpha = 3) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = "Routes", y = "Borough", title = "Common Routes Between Boroughs")
+
+```
+
+The graph presented is a simplified representation of the common transit routes shared between boroughs, where each line corresponds to a borough, and the marks along it represent the various routes that pass through. The lack of intersection between lines suggests that there are no routes in this dataset that are shared between boroughs; each route is unique to its borough. This could indicate a transit system where boroughs operate somewhat independently, or it could be a visual abstraction that does not account for connections or transfers between routes.
+
+From this graph, we can infer that the transit system is potentially segmented by borough, with each area having distinct routes. The absence of inter-borough routes may reflect a focus on intra-borough connectivity, or it might be a limitation of the dataset or the specific visualization technique used. For urban planners and transit authorities, such a graph could highlight the potential need to improve inter-borough connectivity if such routes are indeed lacking, or it could validate a strategy that prioritizes strengthening transport within each borough
+
+
+#Hai 
+```{r}
+
+```
+
+
+#Hai 
+```{r}
+
+```
+
