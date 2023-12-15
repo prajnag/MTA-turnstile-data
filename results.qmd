@@ -234,10 +234,7 @@ ggplot(mtadata_separated, aes(x = routes, y = borough, group = borough)) +
   labs(x = "Routes", y = "Borough", title = "Common Routes Between Boroughs")
 
 ```
-
-The graph presented is a simplified representation of the common transit routes shared between boroughs, where each line corresponds to a borough, and the marks along it represent the various routes that pass through. The lack of intersection between lines suggests that there are no routes in this dataset that are shared between boroughs; each route is unique to its borough. This could indicate a transit system where boroughs operate somewhat independently, or it could be a visual abstraction that does not account for connections or transfers between routes.
-
-From this graph, we can infer that the transit system is potentially segmented by borough, with each area having distinct routes. The absence of inter-borough routes may reflect a focus on intra-borough connectivity, or it might be a limitation of the dataset or the specific visualization technique used. For urban planners and transit authorities, such a graph could highlight the potential need to improve inter-borough connectivity if such routes are indeed lacking, or it could validate a strategy that prioritizes strengthening transport within each borough
+We interpret the spread of horizontal lines across the x-axis labeled 'Routes' to identify the commonality of routes among the boroughs. Each horizontal line represents one borough, and the length of the line across the 'Routes' axis indicates the number of routes that pass through each borough. The line representing Brooklyn (BK) extends across multiple routes, suggesting that Brooklyn shares several common routes with other boroughs. From the graph, it appears that the line for Staten Island (SI) does not extend across any of the routes listed on the x-axis, which would suggest that Staten Island does not share any common transit routes with the other boroughs.
 
 
 ## Interactive Scatter Plot based on Zipcode
