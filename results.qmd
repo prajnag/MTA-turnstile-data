@@ -34,7 +34,7 @@ ggplot(route_borough_count, aes(x = reorder(routes, n), y = n)) +
   labs(title = "Number of Data Records per Route by Borough", 
        x = "Route", 
        y = "Number of Records") +
-  scale_y_continuous(labels = scales::comma)  # Use commas for large numbers
+  scale_y_continuous(labels = scales::comma)
 
 ```
 
@@ -54,11 +54,11 @@ mtadata %>%
   geom_line() +
   geom_point() +
   facet_wrap(~ borough) + 
-  scale_color_brewer(palette = "Set1") + # Add color using Color Brewer palette
+  scale_color_brewer(palette = "Set1") + 
   labs(title = "Day of Week Ridership Patterns by Borough", x = "Day of the Week", y = "Total Ridership") +
   theme_minimal() +
   scale_y_continuous(labels = function(x) format(x, big.mark = ",", scientific = FALSE)) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) # Improve label readability
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) 
 ```
 
 This graph shows the total number of people using public transportation across different boroughs of New York City on each day of the week. The data is plotted for Brooklyn (BK), Bronx (BX), Manhattan (M), Queens (Q), and Staten Island (SI), with each borough represented by a different color.
@@ -79,7 +79,7 @@ mtadata %>%
   labs(title = "Ridership by Payment Method and Borough", x = "Payment Method", y = "Total Ridership") +
   theme_minimal() +
   scale_y_log10() +
-  theme(legend.position = "bottom") # Adjust legend position
+  theme(legend.position = "bottom") 
 
 ```
 
@@ -217,7 +217,7 @@ mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
 mtadata_separated <- mtadata %>%
   separate_rows(routes, sep = ",") %>%
   group_by(borough, routes) %>%
-  summarise(Count = n(), .groups = 'drop') # ensure the groups are dropped after summarising
+  summarise(Count = n(), .groups = 'drop') 
 mtadata_separated <- mtadata_separated %>%
   filter(routes != "") 
 
@@ -240,7 +240,7 @@ The graph presented is a simplified representation of the common transit routes 
 From this graph, we can infer that the transit system is potentially segmented by borough, with each area having distinct routes. The absence of inter-borough routes may reflect a focus on intra-borough connectivity, or it might be a limitation of the dataset or the specific visualization technique used. For urban planners and transit authorities, such a graph could highlight the potential need to improve inter-borough connectivity if such routes are indeed lacking, or it could validate a strategy that prioritizes strengthening transport within each borough
 
 
-## Hai 
+## Interactive Scatter Plot based on Zipcode
 ```{r}
 mtadata <- mtadata %>%
   distinct(station_complex_id, `New.York.Zip.Codes`, borough)
@@ -269,7 +269,7 @@ From the graph, it's clear that there's a wide range of station counts across th
 
 This visualization can provide insights into the accessibility of public transportation across New York City and could be used to identify areas that might benefit from additional transit services.
 
-## Hai 
+## Top 10 Stations during Peak and Non Peak Times
 ```{r}
 mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
 
@@ -296,7 +296,6 @@ top_stations_non_peak <- mtadata %>%
   top_n(10) %>%
   pull(station_complex)
 
-# Creating separate data frames for peak and non-peak times
 peak_data <- mtadata %>%
   filter(station_complex %in% top_stations_peak, travel_time == "Peak") %>%
   group_by(station_complex) %>%
@@ -311,14 +310,21 @@ non_peak_data <- mtadata %>%
 ggplot(peak_data, aes(x = reorder(station_complex, total_ridership), y = total_ridership)) +
   geom_bar(stat = "identity", color = "steelblue", fill = "steelblue") +
   labs(title = "Top 10 Busiest Stations During Peak Travel Times", x = "Total Ridership", y = "Station Complex") +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ",", scientific = FALSE)) +
+
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 
 ggplot(non_peak_data, aes(x = reorder(station_complex, total_ridership), y = total_ridership)) +
   geom_bar(stat = "identity", color = "firebrick", fill = "firebrick") +
   labs(title = "Top 10 Busiest Stations During Non-Peak Travel Times", x = "Total Ridership", y = "Station Complex") +
+  scale_y_continuous(labels = function(x) format(x, big.mark = ",", scientific = FALSE)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 
 ```
 
-The graph represents a quantitative comparison of station complexes based on the volume of ridership during the busiest periods of travel, such as rush hours. The vertical axis measures the total ridership in a numeric format (which appears to be in the hundreds of thousands based on the scale), and the horizontal axis lists the station complexes. This graph helps to identify which stations have the highest demand during peak hours, information that can be critical for transit authorities for resource allocation, scheduling, and improving services. It can also indicate the flow of commuter traffic and highlight potential areas for infrastructure development.
+The bar charts presented are based on a definition of peak travel hours within the dataset used to generate them. The peak hours have been specifically set to include the early morning hours of 7 AM to 10 AM and the evening hours of 5 PM to 8 PM. These times, are typically associated with the rush hours during which commuters travel to and from work, resulting in the highest demand for public transportation services.
+
+The "Top 10 Busiest Stations During Peak Travel Times" chart uses this definition to determine which stations experience the most traffic during these critical hours, here, the top two being “Canal St” and “Wall St”. Similarly, the "Top 10 Busiest Stations During Non-Peak Travel Times" chart contrasts this by showing the stations with the highest ridership outside of these designated peak times, here, the top two being “West 4 Washington St” and “49 St”. The data illustrates how ridership volume varies between these high-demand periods and less busy times of the day, providing insights that can help in planning for capacity, scheduling, and other operational considerations.
+
+Understanding the dynamics of peak vs. non-peak ridership is essential for efficient transit management, as it influences staffing levels, frequency of service, and the need for crowd management strategies at these stations.
 
