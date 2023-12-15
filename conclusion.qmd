@@ -1,1 +1,21 @@
 # Conclusion
+
+These are some of the inferences we can draw from the plots we constructed. 
+
+1. **Ridership Over Time**: The graph shows fluctuations in ridership across different days, reflecting typical patterns of subway usage. It likely indicates higher ridership on specific days, which could correspond to workdays, suggesting a commuting pattern among subway users.
+
+2. **Ridership by Borough**: The ridership distribution among boroughs highlights which areas have higher subway usage. This information is crucial for transit planning, as it indicates where the demand for subway services is concentrated.
+
+3. **Busiest Stations During Peak and Non-Peak Times**: This comparison reveals key transit hubs that are particularly busy during peak hours, likely due to work-related commuting, and stations that maintain steady ridership, possibly serving residential areas or tourist attractions.
+
+4. **Ridership Distribution by Hour of Day**: The ridership trend throughout the day shows peak usage hours, which are typically aligned with morning and evening commuting times. This pattern is essential for scheduling and resource allocation in the subway system.
+
+5. **Ridership by Payment Method**: The analysis of payment methods used for ridership offers insights into the popularity and adoption rate of different payment options, such as OMNY and MetroCard. It could also reflect user convenience and technological trends.
+
+6. **Weekday vs Weekend Ridership Patterns**: The comparison between weekdays and weekends suggests different ridership behaviors, likely with more work-related travel during weekdays and leisure or personal errands during weekends.
+
+7. **Heatmap of Transfers at Different Stations**: This heatmap likely identifies stations with high transfer activities, indicating major junctions in the subway system. These stations are critical points for connectivity and passenger flow within the network.
+
+8. **Variability and Outliers of Ridership Among Different Boroughs**: The boxplot indicates the consistency or variance in ridership among different boroughs, with outliers highlighting days with unusually high or low ridership, possibly due to special events or disruptions.
+
+Overall, these graphs collectively provide a comprehensive understanding of the New York City subway system's usage patterns. They reveal important insights into daily and weekly transit rhythms, commuter behaviors, payment preferences, and the subway network's key hubs. This information is invaluable for transit authorities for effective management, planning, and enhancement of subway services.

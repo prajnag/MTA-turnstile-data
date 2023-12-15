@@ -1,4 +1,4 @@
-# Interactive graph
+# Interactive graph - How Ridership changes over the Hours for Different Subway Routes 
 
 <style>
   * {
@@ -6,7 +6,20 @@
   }
 </style> 
 
-<div id="plot">
+<div >
+  <h1 id="clock"></h1>
+</div>
+
+<div id="plot" style="padding-left: 30px;">
+</div>
+
+<div style="padding-left: 30px;">
+  <p></p>
+  Note: This graph may take a second or two to load. 
+  
+  The X axis on this graph are the different subway routes. The Y axis tells us about the rider population on those different routes. 
+  
+  Through this graph, we wish to show how the population of riders change through the hours. We notice that during the peak hours, train routes such as the 1 train and the R train seem to increase exponentially. This can be attributed to the fact that people require to travel to work, university, etc. Overall, the ridership is a lot lower post 1am, and starts to pick up by 6am the next morning. 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>

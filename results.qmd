@@ -21,12 +21,10 @@ mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
 mtadata_separated <- mtadata %>%
   separate_rows(routes, sep = ",")
 
-# Create a summary count of records per route and borough
 route_borough_count <- mtadata_separated %>%
   count(routes, borough) %>%
   arrange(borough, desc(n))
 
-# Create the plot with faceting by borough
 ggplot(route_borough_count, aes(x = reorder(routes, n), y = n)) +
   geom_bar(stat = "identity", fill = "skyblue") +
   facet_wrap(~borough, scales = "free_x") +
@@ -40,9 +38,9 @@ ggplot(route_borough_count, aes(x = reorder(routes, n), y = n)) +
 
 ```
 
-The bars represent the number of records, likely corresponding to trips, incidents, or other transit-related events. With boroughs as facets, this visual can highlight which routes have the most recorded activity and may suggest higher usage or more frequent services. For instance, if Manhattan shows significantly more records, it could indicate a higher demand for transit services, possibly due to its being a commercial or tourist hub.
+This graph displays the amount of data collected for different transit routes across the boroughs of New York City. Each subgraph represents a borough: Brooklyn (BK), Bronx (BX), Manhattan (M), Queens (Q), and Staten Island (SI). The vertical axis indicates the number of records, while the horizontal axis lists various transit routes.
 
-To infer from the graph, one can determine the distribution and possible disparities in transit data across boroughs. Routes with higher data counts in a borough like Manhattan suggest busier transit lines, possibly due to dense population and higher commuter traffic. In contrast, lower counts in boroughs like Staten Island may indicate fewer transit services or lower usage. This information can help transit authorities make data-driven decisions for service planning, such as increasing frequency on busy routes or improving data collection methods to ensure service optimization.
+From the data, the most striking finding is that there is a significant variation in the number of data records among routes within each borough, with Manhattan (M) showing a particularly steep increase in records for certain routes. This could imply higher ridership, more frequent services, or possibly more data collection points on these routes. Brooklyn (BK) and Queens (Q) also display a fair range of records across routes but do not reach the peaks seen in Manhattan. The Bronx (BX) shows less variation, indicating a more uniform level of data records across the routes. Staten Island (SI), on the other hand, has far fewer routes, and the data suggests a relatively lower level of records, which could reflect fewer services or a lower population using transit services.
 
 
 ## Analyzing Public Transit: A Week in the Life of a City's Boroughs
@@ -55,7 +53,7 @@ mtadata %>%
   ggplot(aes(x = day_of_week, y = weekly_ridership, group = borough, color = borough)) +
   geom_line() +
   geom_point() +
-  facet_wrap(~ borough) + # Facet by borough
+  facet_wrap(~ borough) + 
   scale_color_brewer(palette = "Set1") + # Add color using Color Brewer palette
   labs(title = "Day of Week Ridership Patterns by Borough", x = "Day of the Week", y = "Total Ridership") +
   theme_minimal() +
@@ -63,7 +61,11 @@ mtadata %>%
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) # Improve label readability
 ```
 
-This graph presents a multifaceted view of public transport usage across different city boroughs over the week. Notably, Manhattan exhibits the highest and most consistent ridership, suggesting it's a hub of activity, potentially a business district with a steady demand for daily transport. Contrasting patterns are evident in Brooklyn and Queens, where a noticeable dip in weekend ridership likely indicates a weekday-centric commuting pattern. Staten Island stands out for its significantly lower transit use, hinting at a smaller population or alternative transportation preferences. The completeness of the data across all weekdays provides a reliable basis for analysis. While the graph serves as a critical tool for urban planners to assess resource allocation and service efficiency, it also implicitly captures cultural and social rhythms—like recreational or work-related transit use—that shape the city's transit narrative. Such data-driven insights are invaluable for both short-term operational adjustments and long-term infrastructure planning, reflecting the underlying pulse of the city's life as it moves throughout the week.
+This graph shows the total number of people using public transportation across different boroughs of New York City on each day of the week. The data is plotted for Brooklyn (BK), Bronx (BX), Manhattan (M), Queens (Q), and Staten Island (SI), with each borough represented by a different color.
+
+From this graph, we can observe that Manhattan (M) has the highest ridership, maintaining a consistent level throughout the week with a slight upward trend as the week progresses. Brooklyn (BK) and Queens (Q) follow a similar pattern, with steady ridership numbers that do not fluctuate much from day to day. The Bronx (BX) shows lower ridership compared to Brooklyn and Queens, but it follows the same trend of consistency across the week. Staten Island (SI) has the lowest ridership figures of all, indicating fewer people use public transportation there, or there may be fewer transportation options available.
+
+This data suggests that public transportation is heavily utilized in Manhattan, possibly due to a high concentration of workplaces, attractions, and residential areas, necessitating daily travel. The consistency in ridership numbers across the week, including weekends, could imply that the city’s transit system is integral to the daily lives of its residents, not just for commuting but also for other activities.
 
 ## Payment Preferences and Transit Usage Across City Boroughs
 
@@ -73,7 +75,7 @@ mtadata %>%
   summarise(method_ridership = sum(ridership, na.rm = TRUE), .groups = 'drop') %>%
   ggplot(aes(x = payment_method, y = method_ridership, fill = payment_method)) +
   geom_bar(stat = "identity") +
-  facet_wrap(~ borough) + # Add faceting by borough
+  facet_wrap(~ borough) + # Faceting by borough
   labs(title = "Ridership by Payment Method and Borough", x = "Payment Method", y = "Total Ridership") +
   theme_minimal() +
   scale_y_log10() +
@@ -81,7 +83,11 @@ mtadata %>%
 
 ```
 
-This graph illustrates the utilization of two payment methods—MetroCard and OMNY—across different boroughs. The y-axis uses a logarithmic scale, highlighting the disparities in ridership numbers, which are particularly pronounced in Staten Island (SI), where the use of OMNY is almost on par with MetroCard, differing from the other boroughs where MetroCard is more dominant. The graph suggests a potential trend towards adopting the newer OMNY system, especially in areas with lower ridership. Moreover, the vast difference in scale between boroughs like Manhattan (M) and Staten Island (SI) underscores the uneven distribution of transit use across the city. This data can be critical for transit authorities to understand and respond to the evolving patterns of payment preferences and transit usage.
+Our plot presents a comparison of the total ridership based on two different payment methods—MetroCard and OMNY—across various boroughs of New York City: Brooklyn (BK), Bronx (BX), Manhattan (M), Queens (Q), and Staten Island (SI). The vertical axis is on a logarithmic scale, indicating a wide range of ridership numbers, which allows for the comparison of values that differ greatly in magnitude.
+
+From the graph, it's evident that the MetroCard is still a widely used payment method across all boroughs, showing a substantial number of riders using it. The OMNY system, which is a newer contactless payment option, also shows significant usage, with its adoption rate seemingly close to that of the MetroCard in certain boroughs like Manhattan and the Bronx. Notably, in Queens and Staten Island, MetroCard usage appears to be more prevalent than OMNY, which might indicate a slower transition to the newer technology or a preference for traditional payment methods in these areas.
+
+This visualization provides insights into the adoption rates of different payment technologies across the city and can inform transit authorities about current trends in commuter payment preferences. 
 
 ## Dissecting Transit Patterns: A Route-by-Route Analysis of Borough Ridership
 ```{r}
@@ -91,15 +97,12 @@ mtadata_separated <- mtadata %>%
 mtadata_separated <- mtadata_separated %>%
   filter(routes != "") 
 
-# Calculate average ridership by route and borough
 average_ridership <- mtadata_separated %>%
   na.omit() %>%
   group_by(borough, routes) %>%
   summarise(average_ridership = mean(ridership, na.rm = TRUE), .groups = 'drop') %>%
   arrange(borough, desc(average_ridership))
 
-
-# Create a stacked bar chart
 ggplot(average_ridership, aes(x = borough, y = average_ridership, fill = routes)) +
   geom_bar(stat = "identity") +
   theme_minimal() +
@@ -111,7 +114,12 @@ ggplot(average_ridership, aes(x = borough, y = average_ridership, fill = routes)
 
 ```
 
-This plot shows a stacked bar chart representing the average ridership for different routes within each borough. The varying colors in each stacked segment correspond to different routes, allowing for a visual comparison of route popularity within each borough. The height of each color segment within the bars indicates the average ridership for that particular route, and the total height of each stacked bar represents the combined average ridership for all routes within the borough. Inferences from the graph might suggest which routes are most and least utilized in each borough, guiding decisions for service adjustments or highlighting the need for further investigation into why certain routes are preferred over others.
+This displays a stacked bar chart, where each bar represents a New York City borough (Brooklyn - BK, Bronx - BX, Manhattan - M, and Queens - Q) and each color within the bars corresponds to a different transit route labeled A through Z and numbers 1 through 7. The vertical axis shows the average ridership, which quantifies the number of riders per route within each borough.
+
+From this visual, we can infer several points. Manhattan (M) has the highest average ridership across the most transit routes, which could suggest that it is the most heavily trafficked borough in terms of public transportation, likely due to being a central business district with numerous attractions and residential areas. Brooklyn (BK) and Queens (Q) have a moderate level of average ridership, with a variety of routes used. The Bronx (BX) has the lowest average ridership among the four boroughs shown, with fewer routes represented.
+
+This chart could indicate the distribution and utilization of transit services in each borough. For instance, the data might reflect that Manhattan's transit system is extensively used across many routes, showing the borough's reliance on public transportation. For Brooklyn and Queens, the diversity in route usage suggests a well-distributed transit network catering to various parts of the boroughs. The lower ridership in the Bronx could point to less frequent or less utilized transit services. 
+
 
 ## Strategic Insights: Comparing Station Popularity and Transit Demand
 
@@ -120,15 +128,15 @@ mtadata_summary <- mtadata %>%
   group_by(station_complex) %>%
   summarise(average_daily_ridership = mean(ridership, na.rm = TRUE), .groups = 'drop')
 
-# Determine the top 10 and bottom 10 stations
+# Finding top 10 and bottom 10 stations
 top_10 <- mtadata_summary %>% top_n(10, average_daily_ridership)
 bottom_10 <- mtadata_summary %>% top_n(-10, average_daily_ridership)
 
-# Combine top 10 and bottom 10 stations
+
 selected_stations <- bind_rows(top_10, bottom_10) %>%
   mutate(station_complex = factor(station_complex, levels = unique(station_complex)))
 
-# Create the plot
+
 ggplot(selected_stations, aes(x = station_complex, y = average_daily_ridership)) +
   geom_point() +
   coord_flip() +
@@ -139,7 +147,11 @@ ggplot(selected_stations, aes(x = station_complex, y = average_daily_ridership))
   theme(axis.text.y = element_text(size = 7), axis.title.y = element_text(size = 10))
 ```
 
-This graph contrasts the ridership levels of the ten busiest and ten least busy stations. Horizontal orientation emphasizes the differences in average daily ridership, with stations like Times Sq-42 St showing substantial passenger throughput, suggesting a major transit hub or intersection of key routes. Conversely, stations like Tompkinsville register minimal ridership, indicating potentially less dense areas or less popular routes. This stark contrast in ridership numbers could reflect various factors, such as station location, connectivity, and surrounding amenities or attractions. The data might guide infrastructure development, targeted service improvements, and resource allocation to enhance overall system efficiency and user experience.
+This graph displays a horizontal dot plot, where each dot represents a subway station in New York City. The stations are listed on the y-axis, and the x-axis indicates the average daily ridership. This type of plot is helpful to easily compare the ridership between stations at a glance.
+
+From the graph, we can discern which stations have the highest and lowest average daily ridership. Stations like “West 4 St,” "Fulton St," and “Broadway- Lafayette St” are among the busiest, with the highest number of average daily riders. These stations are likely to be major transit hubs or are located in densely populated areas or central business districts with high footfall. On the other end of the spectrum, stations like “Bay Pkwy,” “Alabama Av," and “Broad Channel” have significantly lower ridership numbers, indicating they are less frequented by commuters, possibly due to their location in less busy areas or because they serve as local stops rather than major transfer points.
+
+This information is particularly useful for city planners and transit authorities to identify where to focus resources and improvements. It can also inform potential infrastructure expansions or targeted marketing campaigns to increase ridership in less-utilized areas
 
 ## Navigating Transit Trends: Seasonal Ridership Fluctuations Across Boroughs
 ```{r}
@@ -149,7 +161,6 @@ mtadata <- data.frame(
   ridership = sample(100:200, 30, replace = TRUE)
 )
 
-# Code to create the interactive plot
 p <- mtadata %>%
   mutate(
     month = floor_date(as.Date(transit_timestamp), "month"),
@@ -159,15 +170,18 @@ p <- mtadata %>%
   summarise(Total_Ridership = sum(ridership, na.rm = TRUE), .groups = 'drop') %>%
   ggplot(aes(x = month, y = Total_Ridership, color = borough, group = borough)) +
   geom_line() +
-  scale_color_viridis_d() + # Using viridis for a discrete color scale
+  scale_color_viridis_d() +
   labs(title = "Total Ridership Over Time by Month and Borough", x = "Month", y = "Total Ridership")
 
-# Convert to an interactive plot
 ggplotly(p)
 
 ```
 
-This graph presents a time series analysis of ridership across five boroughs over a six-month period. Fluctuations are apparent, suggesting variability in transit use which could be due to seasonal factors, events, or changes in commuter habits. Manhattan consistently shows higher ridership, reflecting its likely role as a central business or tourist district. The sharp increase in ridership in December for Staten Island could point to holiday-related travel or seasonal events. Such data can be invaluable for transit planning, especially in adjusting service levels to match demand and improving the efficiency of the transit system overall.
+This plot is a line chart that tracks the changes in public transportation ridership across the five boroughs of New York City (Bronx, Brooklyn, Manhattan, Queens, and Staten Island) over a six-month period. The y-axis indicates the total ridership, while the x-axis represents the time, marked from July to December.
+
+The lines for each borough show fluctuations in ridership as the months progress. One notable trend is a peak or trough during certain months for different boroughs, which could correspond to seasonal events, changes in service levels, or other factors influencing how many people take public transport. For example, Brooklyn shows a significant rise in ridership in August, while the Bronx experiences a dip during the same period. Manhattan's line appears to have a general downward trend as the year progresses, which might indicate a decrease in commuters or tourists during these months. Queens and Staten Island show less dramatic changes, but still display some variability.
+
+This data can be valuable for transit planners to anticipate demand, adjust service, and plan for future infrastructure needs.
 
 ## Hourly Transit Flow Throughout the Week
 ```{r}
@@ -180,35 +194,39 @@ mtadata1 %>%
   summarise(hourly_ridership = mean(ridership, na.rm = TRUE)) %>%
   ggplot(aes(x = hour, y = hourly_ridership, group = day_of_week, color = day_of_week)) +
   geom_bar(stat = "identity") +
-  facet_wrap(~ day_of_week) + # Facet by borough
+  facet_wrap(~ day_of_week) + # Faceting by borough
   scale_color_brewer(palette = "Set1") + # Add color using Color Brewer palette
   labs(title = "Day of Week Ridership Patterns by Borough", x = "Day of the Week", y = "Total Ridership") +
   theme_minimal() +
   scale_x_discrete(breaks=function(x) x[seq(1, length(x), by=2)]) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) # Improve label readability
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))
 
 ```
-This plot illustrates the average hourly ridership for each day of the week across different boroughs. The variation in height of the bars within each day suggests peak and off-peak hours. Days like Friday and Saturday show higher ridership peaks, possibly indicating leisure or social activities, while the relatively flat profile on days like Sunday could imply a lower or more evenly spread ridership throughout the day. These patterns could inform transit service planning, such as the need for increased frequency during peak hours or reduced services during off-peak times to optimize operational efficiency
+The graph is a set of bar charts representing the total ridership for each day of the week, where each bar chart corresponds to a different day, from Sunday to Saturday. The y-axis indicates the total ridership, and the x-axis represents the hours of the day, likely in a 24-hour format. Different colors in the bar charts represent different boroughs of New York City.
+
+Each bar chart shows the fluctuation in ridership at different times of the day for each borough, which can help identify peak and off-peak travel times. For instance, on Fridays (red bars), there seems to be a significant increase in ridership during certain hours, perhaps corresponding to the end of the workweek when people may go out more. The patterns on weekdays (Monday through Friday) show two spikes, likely illustrating the morning and evening rush hours. On weekends (Saturday and Sunday), the ridership increases more gradually and doesn’t have the distinct peaks of the weekdays, suggesting a more even distribution of travel throughout the day.
+
+This information is useful for understanding how transit demand varies throughout the week and can be essential for scheduling, staffing, and service planning.
 
 
 ## Borough-Specific Transit Routes: Analyzing Inter-Borough Connectivity
 ```{r}
 mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
 
-# Separate the routes into individual rows and then count them
+# Separating the routes into individual rows and then count them
 mtadata_separated <- mtadata %>%
   separate_rows(routes, sep = ",") %>%
   group_by(borough, routes) %>%
   summarise(Count = n(), .groups = 'drop') # ensure the groups are dropped after summarising
 mtadata_separated <- mtadata_separated %>%
   filter(routes != "") 
-# Ensure routes are unique before creating factor levels
+
 unique_routes <- unique(mtadata_separated$routes[order(mtadata_separated$Count, decreasing = TRUE)])
 
-# Convert routes to a factor with ordered levels
+
 mtadata_separated$routes <- factor(mtadata_separated$routes, levels = unique_routes)
 
-# Create the parallel coordinate plot
+
 ggplot(mtadata_separated, aes(x = routes, y = borough, group = borough)) +
   geom_line(aes(color = borough), alpha = 3) +
   theme_minimal() +
@@ -222,14 +240,85 @@ The graph presented is a simplified representation of the common transit routes 
 From this graph, we can infer that the transit system is potentially segmented by borough, with each area having distinct routes. The absence of inter-borough routes may reflect a focus on intra-borough connectivity, or it might be a limitation of the dataset or the specific visualization technique used. For urban planners and transit authorities, such a graph could highlight the potential need to improve inter-borough connectivity if such routes are indeed lacking, or it could validate a strategy that prioritizes strengthening transport within each borough
 
 
-#Hai 
+## Hai 
 ```{r}
+mtadata <- mtadata %>%
+  distinct(station_complex_id, `New.York.Zip.Codes`, borough)
+
+# Calculating the number of unique stations for each zip code
+station_counts <- mtadata %>%
+  group_by(`New.York.Zip.Codes`, borough) %>%
+  summarise(num_stations = n_distinct(station_complex_id),
+            station_complex_id = toString(unique(station_complex_id)))
+
+plot_ly(data = station_counts, 
+        x = ~`New.York.Zip.Codes`, 
+        y = ~num_stations, 
+        color = ~factor(borough), 
+        text = ~station_complex_id, 
+        type = "scatter",
+        mode = "markers") %>%
+  layout(title = "Interactive Scatter Plot of Number of Stations by Zip Code",
+         xaxis = list(title = "New York Zip Codes"),
+         yaxis = list(title = "Number of Stations"))
+
+```
+This graph visualizes the distribution of subway or train stations across different zip codes in New York City. Each dot represents a zip code, with the x-axis indicating the numerical range of zip codes and the y-axis showing the number of stations in that zip code. The dots are color-coded by boroughs, with BK for Brooklyn, BX for Bronx, M for Manhattan, Q for Queens, and SI for Staten Island.
+
+From the graph, it's clear that there's a wide range of station counts across the zip codes. Some zip codes, have a high number of stations, suggesting they are significant transit hubs within the borough of Brooklyn (BK). Other zip codes have fewer stations, which could be due to a variety of factors, such as lower population density or less demand for public transit.
+
+This visualization can provide insights into the accessibility of public transportation across New York City and could be used to identify areas that might benefit from additional transit services.
+
+## Hai 
+```{r}
+mtadata <- read.csv("mtadata.csv", header = TRUE, stringsAsFactors = FALSE)
+
+mtadata$transit_timestamp <- as.POSIXct(mtadata$transit_timestamp, format = "%m/%d/%Y %I:%M:%S %p")
+mtadata$hour <- format(mtadata$transit_timestamp, "%H")
+
+# peak hours
+peak_hours <- c("07", "08", "09", "10", "17", "18", "19", "20")  
+
+# Classifying as peak or non-peak
+mtadata$travel_time <- ifelse(mtadata$hour %in% peak_hours, "Peak", "Non-Peak")
+
+# Getting the top 10 stations for peak times
+top_stations_peak <- mtadata %>%
+  filter(travel_time == "Peak") %>%
+  count(station_complex, wt = ridership) %>%
+  top_n(10) %>%
+  pull(station_complex)
+
+# Getting the top 10 stations for non-peak times
+top_stations_non_peak <- mtadata %>%
+  filter(travel_time == "Non-Peak") %>%
+  count(station_complex, wt = ridership) %>%
+  top_n(10) %>%
+  pull(station_complex)
+
+# Creating separate data frames for peak and non-peak times
+peak_data <- mtadata %>%
+  filter(station_complex %in% top_stations_peak, travel_time == "Peak") %>%
+  group_by(station_complex) %>%
+  summarise(total_ridership = sum(ridership, na.rm = TRUE))
+
+non_peak_data <- mtadata %>%
+  filter(station_complex %in% top_stations_non_peak, travel_time == "Non-Peak") %>%
+  group_by(station_complex) %>%
+  summarise(total_ridership = sum(ridership, na.rm = TRUE))
+
+# Creating plots for peak and non-peak times
+ggplot(peak_data, aes(x = reorder(station_complex, total_ridership), y = total_ridership)) +
+  geom_bar(stat = "identity", color = "steelblue", fill = "steelblue") +
+  labs(title = "Top 10 Busiest Stations During Peak Travel Times", x = "Total Ridership", y = "Station Complex") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+
+ggplot(non_peak_data, aes(x = reorder(station_complex, total_ridership), y = total_ridership)) +
+  geom_bar(stat = "identity", color = "firebrick", fill = "firebrick") +
+  labs(title = "Top 10 Busiest Stations During Non-Peak Travel Times", x = "Total Ridership", y = "Station Complex") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 
 ```
 
-
-#Hai 
-```{r}
-
-```
+The graph represents a quantitative comparison of station complexes based on the volume of ridership during the busiest periods of travel, such as rush hours. The vertical axis measures the total ridership in a numeric format (which appears to be in the hundreds of thousands based on the scale), and the horizontal axis lists the station complexes. This graph helps to identify which stations have the highest demand during peak hours, information that can be critical for transit authorities for resource allocation, scheduling, and improving services. It can also indicate the flow of commuter traffic and highlight potential areas for infrastructure development.
 
